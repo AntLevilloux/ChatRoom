@@ -24,7 +24,7 @@
 
                     if(mysqli_num_rows($req) == 0){
                         $hashedPassword = password_hash($mdp1, PASSWORD_DEFAULT);
-                        $req = mysqli_query($con , "INSERT INTO utilisateurs VALUES (NULL, '$email' , '$hashedPassword') ");
+                        $req = mysqli_query($con , "INSERT INTO utilisateurs (id_u, email, mdp) VALUES (NULL, '$email' , '$hashedPassword') ");
 
                         if($req){
                             $_SESSION['message'] = "<p class='message_inscription'>Votre compte a été créer avec succès !</p>" ;
@@ -51,6 +51,7 @@
             </p>
             <label>Adresse Mail</label>
             <input type="email" name="email">
+         
             <label>Mots de passe</label>
             <input type="password" name="mdp1" class="mdp1">
             <label>Confirmation Mots de passe</label>
