@@ -19,25 +19,32 @@
                 $mdp1 = trim($_POST['mdp1']);
                 $mdp2 = trim($_POST['mdp2']);
 
-                if(filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($mdp1) && !empty($mdp2) && $mdp1 === $mdp2){
-                    $req = mysqli_query($con , "SELECT * FROM utilisateurs WHERE email = '$email'");
+                if(strlen($mdp1) >= 8 && preg_match('/[A-Za-z]/', $mdp1) && preg_match('/\d/', $mdp1)){
 
-                    if(mysqli_num_rows($req) == 0){
-                        $hashedPassword = password_hash($mdp1, PASSWORD_DEFAULT);
-                        $req = mysqli_query($con , "INSERT INTO utilisateurs (id_u, email, mdp) VALUES (NULL, '$email' , '$hashedPassword') ");
+                    if(filter_var($email, FILTER_VALIDATE_EMAIL) && !empty($mdp1) && !empty($mdp2) && $mdp1 === $mdp2){
+                        $req = mysqli_query($con , "SELECT * FROM utilisateurs WHERE email = '$email'");
 
-                        if($req){
-                            $_SESSION['message'] = "<p class='message_inscription'>Votre compte a été créer avec succès !</p>" ;
-                            header("Location:index.php") ;
+                        if(mysqli_num_rows($req) == 0){
+                            $hashedPassword = password_hash($mdp1, PASSWORD_DEFAULT);
+                            $req = mysqli_query($con , "INSERT INTO utilisateurs (id_u, email, mdp) VALUES (NULL, '$email' , '$hashedPassword') ");
+
+                            if($req){
+                                $_SESSION['message'] = "<p class='message_inscription'>Votre compte a été créer avec succès !</p>" ;
+                                header("Location:index.php") ;
+                            }else {
+                                $error = "Inscription Echouée !";
+                            }
                         }else {
-                            $error = "Inscription Echouée !";
+                            $error = "Cet Email existe déjà !";
                         }
                     }else {
-                        $error = "Cet Email existe déjà !";
+                        $error = "Veuillez remplir tous les champs correctement !";
                     }
-                }else {
-                    $error = "Veuillez remplir tous les champs correctement !";
+
+                }else{
+                    $error = "Mot de passe trop faible !" ;
                 }
+
             }
         ?>
         <form action="" method="POST" class="form_connexion_inscription">
